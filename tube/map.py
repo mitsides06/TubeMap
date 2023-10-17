@@ -1,3 +1,6 @@
+import json
+from tube.components import Station, Line, Connection
+
 class TubeMap:
     """
     Task 1: Complete the definition of the TubeMap class by:
@@ -43,7 +46,41 @@ class TubeMap:
             None
         """
         # TODO: Complete this method
+
+        # Load and read json file.
+        try:
+            with open(filepath, "r") as jsonfile:
+                data = json.load(jsonfile)
+        except Exception:
+            return None
+        else:
+            # Update "stations" attribute
+            for station in data["stations"]:
+                zone_num = float(station["zone"])    # convert string to float
+                if int(zone_num) != zone_num:  # check if zone_num is float
+                    zone_list = [int(zone_num), int(zone_num)+1]
+                    zone_set = set(zone_list)
+                    self.stations[station["id"]] = Station(station["id"], station["name"], zone_set)
+                else:
+                    zone_list = [int(zone_num)]
+                    zone_set = set(zone_list)
+                    self.stations[station["id"]] = Station(station["id"], station["name"], zone_set)
+            
+            # Update "lines" attribute
+            for line in data["lines"]:
+                self.lines[line["line"]] = Line(line["line"], line["name"])
+            
+            # Update "connections" attribute
+            for connection in data["connections"]:
+                station_list = [self.stations[connection["station1"]], self.stations[connection["station2"]]]
+                station_set = set(station_list)
+                self.connections.append(Connection(station_set, self.lines[connection["line"]], connection["time"]))
+
+        
         return
+#temporarily for checking purposes   
+#a = TubeMap()
+#print(a.import_from_json("data/london.json"))
 
 
 def test_import():
