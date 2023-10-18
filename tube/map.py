@@ -80,7 +80,7 @@ class TubeMap:
         return
 #temporarily for checking purposes   
 #a = TubeMap()
-#print(a.import_from_json("data/london.json"))
+#print(a.import_from_json(5))
 
 
 def test_import():

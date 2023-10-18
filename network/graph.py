@@ -1,3 +1,5 @@
+from tube.map import TubeMap
+
 class NeighbourGraphBuilder:
     """
     Task 2: Complete the definition of the NeighbourGraphBuilder class by:
@@ -71,7 +73,29 @@ class NeighbourGraphBuilder:
                 the method should return an empty dict.
         """
         # TODO: Complete this method
-        return dict()
+
+        result = {}
+        try:
+            # Set all the keys of the outer dictionary and set their values to be empty dictioaries
+            for connection in tubemap.connections:
+                stations = [station for station in connection.stations]
+                result[stations[0].id] = {}
+                result[stations[1].id] = {}
+            # Set all the keys of each inner dictionary and set their values to be empty lists
+            for connection in tubemap.connections:
+                stations = [station for station in connection.stations]            
+                result[stations[0].id].setdefault(stations[1].id, [])
+                result[stations[1].id].setdefault(stations[0].id, [])
+            # Fill in the dictionary as required.
+            for connection in tubemap.connections:
+                stations = [station for station in connection.stations]            
+                result[stations[0].id][stations[1].id].append(connection)
+                result[stations[1].id][stations[0].id].append(connection)
+
+            return result
+        
+        except Exception:
+            return dict()
 
 
 def test_graph():
