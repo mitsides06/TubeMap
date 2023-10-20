@@ -74,7 +74,7 @@ class TubeMap:
             for connection in data["connections"]:
                 station_list = [self.stations[connection["station1"]], self.stations[connection["station2"]]]
                 station_set = set(station_list)
-                self.connections.append(Connection(station_set, self.lines[connection["line"]], connection["time"]))
+                self.connections.append(Connection(station_set, self.lines[connection["line"]], int(connection["time"])))
 
         
         return
