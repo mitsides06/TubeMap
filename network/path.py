@@ -22,11 +22,27 @@ class PathFinder:
         # Feel free to add anything else needed here.
     
     def convert_station_name_to_instance(self, station_name):
+        """ Convert station name to station instance.
+
+        Args:
+            station_name (str): name of station
+
+        Returns:
+            station : Station instance corresponing to the station name
+        """
         for station in self.tubemap.stations.values():
             if station.name == station_name:
                 return station
-            
+        
     def convert_station_id_to_instance(self, station_id):
+        """ Convert station id to station instance.
+
+        Args:
+            station_id (str): station id
+
+        Returns:
+            station : Station instance corresponing to the station id
+        """
         for station in self.tubemap.stations.values():
             if station.id == station_id:
                 return station
@@ -69,7 +85,6 @@ class PathFinder:
                 Returns a list with one Station object (the station itself) if 
                 start_station_name and end_station_name are the same.
         """
-        # TODO: Complete this method
         start_station_instance = self.convert_station_name_to_instance(start_station_name)
         end_station_instance = self.convert_station_name_to_instance(end_station_name)
         station_instances_list = list(self.tubemap.stations.values())
@@ -82,18 +97,27 @@ class PathFinder:
         if start_station_name == end_station_name:
             return [start_station_instance]
         
+        # Run the Dijkstra algorithm and return result.
         return self.dijkstra_algo(start_station_instance, end_station_instance)
+    
+    def algo_preparation(self, start):
+        """ Prepares the tools needed to run the Dijkstra algorithm.
+
+        Args:
+            start (Station) : Station instance
         
-
-        
-
-
-
-    def dijkstra_algo(self, start, end):
+        Returns:
+            tuple : Returns a 3-tuple. The first element is a dictionary which its keys are the station 
+                    instances and their corresponding values are infinity except the 'start' station instance 
+                    which has a value of 0. The second element is a dictionary which its keys are the station 
+                    instances and its corresponding values are None. The third element is a list of all station instances.
+        """
         graph = self.graph
         dist = {}
         prev = {}
         unvisited_stations = []
+
+        # Fill in the data structures.
         for station_id in graph:
             station = self.convert_station_id_to_instance(station_id)
             dist[station] = float("inf")
@@ -101,6 +125,14 @@ class PathFinder:
             unvisited_stations.append(station)
         
         dist[start] = 0
+
+        return dist, prev, unvisited_stations
+
+    def dijkstra_algo(self, start, end):
+        graph = self.graph
+        dist = self.algo_preparation(start)[0]
+        prev = self.algo_preparation(start)[1]
+        unvisited_stations = self.algo_preparation(start)[2]
 
         stop = False
         while not stop:
@@ -122,7 +154,6 @@ class PathFinder:
                     if next_station == end:
                         stop = True
                         break
-        
 
         result = []
         curr_station = end
@@ -134,35 +165,43 @@ class PathFinder:
         result.reverse()
 
         return result
+    
 
-
-
+#tubemap = TubeMap()
+#tubemap.import_from_json("data/london.json")
+#graph_builder = NeighbourGraphBuilder()
+#graph = graph_builder.build(tubemap)
+#print(graph['170'])
 
         
 
 
         
     
-tubemap = TubeMap()
-tubemap.import_from_json("data/london.json")
-a = PathFinder(tubemap)
-print(a.get_shortest_path('Stockwell', 'South Kensington'))
+#tubemap = TubeMap()
+#tubemap.import_from_json("data/london.json")
+#a = PathFinder(tubemap)
+#print(a.get_shortest_path('Charing Cross', 'Chancery Lane'))
 
 
-#def test_shortest_path():
-#    from tube.map import TubeMap
-#    tubemap = TubeMap()
-#    tubemap.import_from_json("data/london.json")
+def test_shortest_path():
+    from tube.map import TubeMap
+    tubemap = TubeMap()
+    tubemap.import_from_json("data/london.json")
     
-#    path_finder = PathFinder(tubemap)
-#    stations = path_finder.get_shortest_path("Covent Garden", "Green Park")
-#    print(stations)
+    path_finder = PathFinder(tubemap)
+    stations = path_finder.get_shortest_path("Earl's Court", "Chesham")
+    print(stations)
     
-#    station_names = [station.name for station in stations]
-#    expected = ["Covent Garden", "Leicester Square", "Piccadilly Circus", 
-#                "Green Park"]
-#    assert station_names == expected
+    station_names = [station.name for station in stations]
+    print(station_names)
+    #expected = ["Covent Garden", "Leicester Square", "Piccadilly Circus", 
+    #            "Green Park"]
+    #assert station_names == expected
 
 
-#if __name__ == "__main__":
-#    test_shortest_path()
+
+
+
+if __name__ == "__main__":
+    test_shortest_path()
