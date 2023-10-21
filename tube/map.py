@@ -16,7 +16,6 @@ class TubeMap:
     - connections: a list of Connection instances for the TubeMap 
       (list of Connections)
     """
-
     def __init__(self):
         self.stations = {}  # key: id (str), value: Station instance
         self.lines = {}  # key: id (str), value: Line instance
@@ -45,8 +44,6 @@ class TubeMap:
         Returns:
             None
         """
-        # TODO: Complete this method
-
         # Load and read json file.
         try:
             with open(filepath, "r") as jsonfile:
@@ -69,20 +66,14 @@ class TubeMap:
             # Update "lines" attribute
             for line in data["lines"]:
                 self.lines[line["line"]] = Line(line["line"], line["name"])
-            
+                
             # Update "connections" attribute
             for connection in data["connections"]:
                 station_list = [self.stations[connection["station1"]], self.stations[connection["station2"]]]
                 station_set = set(station_list)
                 self.connections.append(Connection(station_set, self.lines[connection["line"]], int(connection["time"])))
-
-        
         return
-#temporarily for checking purposes   
-#a = TubeMap()
-#print(a.import_from_json(5))
-
-
+    
 def test_import():
     tubemap = TubeMap()
     tubemap.import_from_json("data/london.json")
@@ -98,7 +89,6 @@ def test_import():
     
     # view stations for the first Connection
     print([station for station in tubemap.connections[0].stations])
-
 
 if __name__ == "__main__":
     test_import()

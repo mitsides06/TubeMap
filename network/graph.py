@@ -72,8 +72,6 @@ class NeighbourGraphBuilder:
                 If the input data (tubemap) is invalid, 
                 the method should return an empty dict.
         """
-        # TODO: Complete this method
-
         result = {}
         try:
             # Set all the keys of the outer dictionary and set their values to be empty dictioaries
