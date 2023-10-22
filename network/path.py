@@ -30,7 +30,7 @@ class PathFinder:
             station_name (str): name of station
 
         Returns:
-            station : Station instance corresponing to the station name
+            Station : Station instance corresponing to the station name
         """
         for station in self.tubemap.stations.values():
             if station.name == station_name:
@@ -122,19 +122,18 @@ class PathFinder:
         
         self.dist[start] = 0
 
-    def main_algo(self, curr_station, end):
+    def main_algo(self, curr_station):
         """ Main part of Dijkstra algorithm.
             
             It investigates the connected stations of the currenct station, 
             updating the dis, prev, and univisted_stations attributes.
-            It also informs the Dijkstra algorithm when to stop the while loop.
 
             Args:
                 curr_station (Station) : The station instance of the current station
                 end (Station) : The station instance of the final station
             
             Returns:
-                bool : True if we've reached the final station, False otherwise.
+                None
         """
         for next_station_id in self.graph[curr_station.id]:
             next_station = self.convert_station_id_to_instance(next_station_id)
@@ -146,10 +145,6 @@ class PathFinder:
                 self.dist[next_station] = start_to_next_dist
                 self.prev[next_station] = curr_station
 
-                if next_station == end:
-                    return True
-        return False
-    
     def dijkstra_algo(self, start, end):
         """ This is the Dijkstra algorithm used to find the shortest path.
 
@@ -165,14 +160,12 @@ class PathFinder:
         while len(self.unvisited_stations) > 0:
             min_dist = min([self.dist[station] for station in self.unvisited_stations])
 
-            # Set the station with the minimum distance as the current one,
+            # Set the station in the unvisited_list with the minimum distance as the current one,
             # and remove it from unvisited_stations list.
             curr_station = [station for station, dist in self.dist.items() if dist == 
                             min_dist and station in self.unvisited_stations][0]
             self.unvisited_stations.remove(curr_station) 
-            
-            if self.main_algo(curr_station, end):
-                break
+            self.main_algo(curr_station)
 
         result = []
         curr_station = end
@@ -190,7 +183,7 @@ def test_shortest_path():
     tubemap.import_from_json("data/london.json")
     
     path_finder = PathFinder(tubemap)
-    stations = path_finder.get_shortest_path('Stockwell', 'South Kensington')
+    stations = path_finder.get_shortest_path('High Barnet', 'Upminster')
     print(stations)
     
     station_names = [station.name for station in stations]

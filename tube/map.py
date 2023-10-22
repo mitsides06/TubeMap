@@ -49,9 +49,9 @@ class TubeMap:
             with open(filepath, "r") as jsonfile:
                 data = json.load(jsonfile)
         except Exception:
-            return None
+            return 
         else:
-            # Update "stations" attribute
+            # Update "stations" attribute.
             for station in data["stations"]:
                 zone_num = float(station["zone"])    # convert string to float
                 if int(zone_num) != zone_num:  # check if zone_num is float
@@ -63,11 +63,11 @@ class TubeMap:
                     zone_set = set(zone_list)
                     self.stations[station["id"]] = Station(station["id"], station["name"], zone_set)
             
-            # Update "lines" attribute
+            # Update "lines" attribute.
             for line in data["lines"]:
                 self.lines[line["line"]] = Line(line["line"], line["name"])
                 
-            # Update "connections" attribute
+            # Update "connections" attribute.
             for connection in data["connections"]:
                 station_list = [self.stations[connection["station1"]], self.stations[connection["station2"]]]
                 station_set = set(station_list)
