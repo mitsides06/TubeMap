@@ -1,4 +1,5 @@
-# COMP70053 - Python Programming - CW2 - Tube Map
+## Project Description
+This project presents an implementation of Dijkstra's algorithm tailored to optimize route finding within the London Tube network. It enables users to determine the fastest route between any two given stations, taking into account the intricate layout and connectivity of the Tube system.
 
 ## Project Structure
 
@@ -22,29 +23,19 @@ Contains the JSON file `london.json` describing the London Tube map.
 ### `network/`
 
 - `path.py` contains the `PathFinder` class, used to compute the shortest path between two stations.
-You can test its implementation via the command:
-```bash
-python -m network.path
-```
+
 
 - `graph.py` contains the `NeighbourGraphBuilder` class, used to generate the abstract graph representing the Tube Map.
-You can test its implementation via the command:
-```bash
-python -m network.graph
-```
+
 
 ### `tube/`
 
-- `components.py` contains the definitions of the following classes (_these classes are already implemented_):
+- `components.py` contains the definitions of the following classes:
   - `Station`
   - `Line`
   - `Connection`
 
 - `map.py` contains the definition `TubeMap` class, used to read the data from a JSON file (for instance: `data/london.json`).
-You can test its implementation via the command:
-```bash
-python -m tube.map
-```
 
 ### `main.py`
 
